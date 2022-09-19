@@ -85,33 +85,7 @@ variables:
         - not:
           - generate_public_ssh_key
 
-  existent_dynamic_group_for_nodes_in_compartment:
-    type: string
-    required: false
-    title: "Existent Dynamic Group"
-    visible:
-      and:
-        - and:
-          - show_advanced
-        - or:
-          - create_compartment_policies
-          - create_tenancy_policies
-        - not:
-          - create_dynamic_group_for_nodes_in_compartment
-        
-  create_compartment_policies:
-    type: boolean
-    title: "Create Compartment Policies"
-    required: false
-    visible:
-      and:
-        - show_advanced
+    
 
-  create_tenancy_policies:
-    type: boolean
-    title: "Create Tenancy Policies"
-    required: false
-    visible:
-      and:
-        - show_advanced
+
 
