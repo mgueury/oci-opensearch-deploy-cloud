@@ -31,7 +31,8 @@ resource "null_resource" "clonerepo" {
   #}
 
   provisioner "local-exec" {
-    command = "echo '(3) Starting git clone command... '; echo 'Username: Before' ${var.oci_username}; echo 'Username: After' ${local.encode_user}; echo 'auth_token' ${local.auth_token}; git clone https://${local.encode_user}:${local.auth_token}@devops.scmservice.${var.region}.oci.oraclecloud.com/namespaces/${local.ocir_namespace}/projects/${oci_devops_project.test_project.name}/repositories/${oci_devops_repository.test_repository.name};"
+    command = "echo '(3) Starting git clone command... '; echo 'Username: Before' ${var.oci_username}; echo 'Username: After' ${local.encode_user}; git clone https://${local.encode_user}:${local.auth_token}@devops.scmservice.${var.region}.oci.oraclecloud.com/namespaces/${local.ocir_namespace}/projects/${oci_devops_project.test_project.name}/repositories/${oci_devops_repository.test_repository.name};"
+    # command = "echo '(3) Starting git clone command... '; echo 'Username: Before' ${var.oci_username}; echo 'Username: After' ${local.encode_user}; echo 'auth_token' ${local.auth_token}; git clone https://${local.encode_user}:${local.auth_token}@devops.scmservice.${var.region}.oci.oraclecloud.com/namespaces/${local.ocir_namespace}/projects/${oci_devops_project.test_project.name}/repositories/${oci_devops_repository.test_repository.name};"
   }
 
   provisioner "local-exec" {
@@ -59,7 +60,6 @@ resource "null_resource" "copyfiles" {
   }
 }
 
-
 resource "null_resource" "pushcode" {
 
   depends_on = [null_resource.copyfiles]
@@ -68,7 +68,6 @@ resource "null_resource" "pushcode" {
     command = "cd ./${oci_devops_repository.test_repository.name}; git config --local user.email 'test@example.com'; git config --local user.name '${var.oci_username}';git add .; git commit -m 'added latest files'; git push origin main"
   }
 }
-
 
 locals {
   git_repo    = "https://github.com/mgueury/oci-opensearch-devops.git"
