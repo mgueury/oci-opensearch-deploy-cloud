@@ -1,8 +1,8 @@
-title: "Build a CI/CD pipelines by using OCI DevOps services."
-stackDescription: "Build a continuous integration and deployment pipeline by using Oracle Cloud Infrastructure DevOps services." 
-description: "Build a continuous integration and deployment pipeline by using Oracle Cloud Infrastructure DevOps services."
+title: "Build an Opensearch demo using DevOps"
+stackDescription: "Build an Opensearch demo using DevOps" 
+description: "Build an Opensearch demo using DevOps"
 schemaVersion: 1.1.0
-version: "20190404"
+version: "20220919"
 locale: "en"
 
 #################
@@ -16,13 +16,7 @@ variableGroups:
   - compartment_ocid
   - region
   - network_cidrs
-  - node_pool_boot_volume_size_in_gbs
-  - deploy_pipeline_deploy_pipeline_parameters_items_default_value
-  - deploy_pipeline_deploy_pipeline_parameters_items_description
-  - deploy_pipeline_deploy_pipeline_parameters_items_name
   - repository_repository_type
-  - deploy_stage_deploy_stage_type
-  - deploy_stage_deploy_stage_type
   - release
 
 
@@ -38,18 +32,7 @@ variableGroups:
   variables:
     - compartment_id
     - app_name
-    - project_description
-    - project_logging_config_retention_period_in_days
 
-- title: Encryption Settings
-  description: Policy setting for the stack deployment
-  visible: true  
-  variables:
-    - use_encryption_from_oci_vault
-    - create_new_encryption_key
-    - existent_encryption_key_id
-    - create_vault_policies_for_group
-    - user_admin_group_for_vault_policy
 
 #################
 # Output Groups
@@ -96,16 +79,6 @@ variables:
     title: "Project Name"
     required: true
 
-  project_logging_config_retention_period_in_days:
-    type: string
-    title: "Project Logs retention period"
-    description: "Days to retain logs from the Project."
-    default: 30
-    required: true
-    visible: 
-      and:
-        - show_advanced
-
   public_ssh_key:
     type: oci:core:ssh:publickey
     title: "Import your own SSH public key"
@@ -149,51 +122,6 @@ variables:
     visible:
       and:
         - show_advanced
-  
-  project_description:
-    type: string
-    title: "DevOps Project Description"
-    description: "A short description for the DevOps project"
-    default: "DevOps Project for OKE deployment"
-    required: false
-    visible: 
-      and:
-        - show_advanced
-  
-  build_pipeline_stage_display_name:
-    type: string
-    title: "DevOps Build Pipeline Stage Name"
-    description: "Name for the DevOps Build Pipeline Stage"
-    required: false
-    visible: true
-
-  repository_default_branch:
-    type: string
-    title: "DevOps Repository Default Branch"
-    description: "Choose Defaulf Branch for DevOps Repository"
-    required: false
-    visible: true
-
-  repository_description:
-    type: string
-    title: "DevOps Repository Description"
-    description: "A short description for the DevOps Repository"
-    required: false
-    visible: true
-
-  git_repo:
-    type: string
-    title: "GitHub.com Repository URL"
-    description: "GitHub.com Repository URL for making git clone command"
-    required: false
-    visible: true
-
-  git_repo_name:
-    type: string
-    title: "GitHub.com Repository Name"
-    description: "GitHub.com Repository Name for making git clone command"
-    required: false
-    visible: true
 
   container_repository_is_public:
     type: boolean
@@ -208,12 +136,6 @@ variables:
     required: false
     visible: true
   
-  deploy_stage_display_name:
-    type: string
-    title: "Deploy Stage Display Name"
-    description: "DevOps Build Pipeline Deploy Stage Display Name"
-    required: false
-    visible: true
 
   build_pipeline_stage_is_pass_all_parameters_enabled:
     type: boolean

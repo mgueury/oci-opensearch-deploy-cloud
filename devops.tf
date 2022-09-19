@@ -5,7 +5,7 @@
 
 resource "oci_logging_log_group" "test_log_group" {
   compartment_id = var.compartment_ocid
-  display_name   = "devops_log_group_${random_string.deploy_id.result}"
+  display_name   = "devops_log_group_${random_string.id.result}"
 }
 
 resource "oci_logging_log" "test_log" {
@@ -30,21 +30,21 @@ resource "oci_logging_log" "test_log" {
   }
 
   is_enabled         = true
-  retention_duration = var.project_logging_config_retention_period_in_days
+  retention_duration = "30"
 }
 
 # Create OCI Notification
 
 resource "oci_ons_notification_topic" "test_notification_topic" {
   compartment_id = var.compartment_ocid
-  name           = "devopstopic_${random_string.deploy_id.result}"
+  name           = "devopstopic_${random_string.id.result}"
 }
 
 # Create devops project
 
 resource "oci_devops_project" "test_project" {
   compartment_id = var.compartment_ocid
-  name           = "devopsproject_${random_string.deploy_id.result}"
+  name           = "devopsproject_${random_string.id.result}"
 
   notification_config {
     #Required
@@ -52,5 +52,5 @@ resource "oci_devops_project" "test_project" {
   }
 
   #Optional
-  description  = var.project_description
+  description  = "opensearch-devops"
 }

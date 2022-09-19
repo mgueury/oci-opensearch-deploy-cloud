@@ -25,7 +25,7 @@ data "oci_identity_regions" "current_region" {
 }
 
 # Randoms
-resource "random_string" "deploy_id" {
+resource "random_string" "id" {
   length  = 4
   special = false
 }

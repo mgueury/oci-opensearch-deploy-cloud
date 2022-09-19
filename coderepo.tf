@@ -7,8 +7,8 @@ resource "oci_devops_repository" "test_repository" {
   project_id = oci_devops_project.test_project.id
 
   #Optional
-  default_branch = var.repository_default_branch
-  description    = var.repository_description
+  default_branch = "main"
+  description    = "repository"
 
   repository_type = var.repository_repository_type
 }
@@ -65,7 +65,7 @@ resource "null_resource" "pushcode" {
   depends_on = [null_resource.copyfiles]
 
   provisioner "local-exec" {
-    command = "cd ./${oci_devops_repository.test_repository.name}; git config --local user.email 'test@example.com'; git config --local user.name '${var.oci_username}';git add .; git commit -m 'added latest files'; git push origin '${var.repository_default_branch}'"
+    command = "cd ./${oci_devops_repository.test_repository.name}; git config --local user.email 'test@example.com'; git config --local user.name '${var.oci_username}';git add .; git commit -m 'added latest files'; git push origin main"
   }
 }
 
