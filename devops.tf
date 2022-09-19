@@ -5,7 +5,7 @@
 
 resource "oci_logging_log_group" "test_log_group" {
   compartment_id = var.compartment_ocid
-  display_name   = "devops_log_group_${random_string.id.result}"
+  display_name   = "devops-log-group_${random_string.id.result}"
 }
 
 resource "oci_logging_log" "test_log" {
@@ -37,14 +37,14 @@ resource "oci_logging_log" "test_log" {
 
 resource "oci_ons_notification_topic" "test_notification_topic" {
   compartment_id = var.compartment_ocid
-  name           = "devopstopic_${random_string.id.result}"
+  name           = "devops-topic-${random_string.id.result}"
 }
 
 # Create devops project
 
 resource "oci_devops_project" "test_project" {
   compartment_id = var.compartment_ocid
-  name           = "devopsproject_${random_string.id.result}"
+  name           = "opensearch-devops"
 
   notification_config {
     #Required

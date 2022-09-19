@@ -5,6 +5,19 @@ resource "oci_devops_build_pipeline" "test_build_pipeline" {
 
   description  = "Build pipeline"
   display_name = "build-pipeline"
+
+  build_pipeline_parameters {
+    items {
+      default_value = var.compartment_ocid
+      description   = ""
+      name          = "TF_VAR_compartment_ocid"
+    }
+    items {
+      default_value = var.region
+      description   = ""
+      name          = "TF_VAR_region"
+    }
+  }
 }
 
 #############################################################################
