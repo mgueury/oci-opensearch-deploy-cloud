@@ -13,7 +13,9 @@ variable "app_name" {
   description = "Application name. Will be used as prefix to identify resources"
 }
 
-variable "oci_username" {}
+variable "oci_username" {
+  default="tenancy/oracleidentitycloudservice/name@domain.com"
+}
 variable "oci_user_authtoken" {}
 
 variable "release" {
