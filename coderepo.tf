@@ -42,11 +42,11 @@ resource "null_resource" "clonerepo" {
 resource "null_resource" "clonefromgithub" {
 
   provisioner "local-exec" {
-    command = "rm -rf ./${var.git_repo_name}"
+    command = "rm -rf ./${local.git_repo_name}"
   }
 
   provisioner "local-exec" {
-    command = "git clone ${var.git_repo};"
+    command = "git clone ${local.git_repo};"
   }
 }
 
@@ -55,7 +55,7 @@ resource "null_resource" "copyfiles" {
   depends_on = [null_resource.clonerepo]
 
   provisioner "local-exec" {
-    command = "rm -rf ${var.git_repo_name}/.git; cp -pr ${var.git_repo_name}/* ${oci_devops_repository.test_repository.name}/; cd .."
+    command = "rm -rf ${local.git_repo_name}/.git; cp -pr ${local.git_repo_name}/* ${oci_devops_repository.test_repository.name}/; cd .."
   }
 }
 
@@ -71,6 +71,8 @@ resource "null_resource" "pushcode" {
 
 
 locals {
+  git_repo    = "https://github.com/mgueury/oci-opensearch-devops.git"
+  git_repo_name = "oci-opensearch-devops"
   encode_user = urlencode(var.oci_username)
   auth_token  = urlencode(var.oci_user_authtoken)
 }
