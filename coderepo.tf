@@ -3,7 +3,7 @@
 
 resource "oci_devops_repository" "test_repository" {
   #Required
-  name       = var.repository_name
+  name       = "repository"
   project_id = oci_devops_project.test_project.id
 
   #Optional
