@@ -16,7 +16,6 @@ variableGroups:
   - compartment_ocid
   - region
   - network_cidrs
-  - repository_repository_type
   - release
 
 
@@ -122,25 +121,4 @@ variables:
     visible:
       and:
         - show_advanced
-
-  container_repository_is_public:
-    type: boolean
-    title: "Is Container Repository public?"
-    required: false
-    visible: true  
-
-  registry_display_name:
-    type: string
-    title: "Registry Display Name"
-    description: "Registry Display Name"
-    required: false
-    visible: true
-  
-
-  build_pipeline_stage_is_pass_all_parameters_enabled:
-    type: boolean
-    title: "Build Pipeline Stage: is pass all parameters enabled?"
-    description: "DevOps Build Pipeline Deploy Stage - enable passing all parameters." 
-    required: false
-    visible: true
 

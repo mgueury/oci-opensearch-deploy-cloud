@@ -10,7 +10,7 @@ resource "oci_devops_repository" "test_repository" {
   default_branch = "main"
   description    = "repository"
 
-  repository_type = var.repository_repository_type
+  repository_type = "HOSTED"
 }
 
 

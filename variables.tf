@@ -9,7 +9,7 @@ variable "compartment_ocid" {}
 variable "region" {}
 
 variable "app_name" {
-  default     = "DevOps"
+  default     = "opensearch"
   description = "Application name. Will be used as prefix to identify resources"
 }
 
@@ -29,10 +29,6 @@ variable "git_repo_name" {
   default = "oci-opensearch-devops"
 }
 
-variable "container_repository_is_public" {
-  default = true
-}
-
 locals {
   ocir_docker_repository = join("", [lower(lookup(data.oci_identity_regions.current_region.regions[0], "key")), ".ocir.io"])
   #ocir_docker_repository = join("", [lower(lookup(data.oci_identity_regions.home_region.regions[0], "key")), ".ocir.io"])
@@ -43,8 +39,5 @@ locals {
 #variable "ocir_region" {
 # default = "iad"}
 
-variable "repository_repository_type" {
-  default = "HOSTED"
-}
 
 
