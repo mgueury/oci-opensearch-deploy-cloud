@@ -34,4 +34,7 @@ resource "random_id" "tag" {
   byte_length = 2
 }
 
+data "oci_objectstorage_namespace" "ns" {
+  compartment_id = var.compartment_ocid
+}
 
