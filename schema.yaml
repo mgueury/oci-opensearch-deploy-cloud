@@ -24,7 +24,6 @@ variableGroups:
   variables:
     - oci_username
     - oci_user_authtoken
-    - show_advanced
 
 - title: DevOps Project Configuration
   visible: true  
@@ -59,13 +58,6 @@ variables:
     visibile: true
     title: "OCI user auth token"
     description: "You can get the auth token from your Profile menu -> click User Settings -> On left side  click *Auth Tokens -> Generate Token"
-  
-  show_advanced:
-    type: boolean
-    title: "Show advanced options?"
-    description: "Shows advanced options."
-    visible: true
-    default: false
 
   compartment_id: 
     type: oci:identity:compartment:id
