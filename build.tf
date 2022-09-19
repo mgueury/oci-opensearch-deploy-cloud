@@ -39,7 +39,7 @@ resource "oci_devops_build_pipeline_stage" "test_build_pipeline_stage" {
   }
 
   build_spec_file                    = ""
-  description                        = "nodejs managed build stage"
+  description                        = "Build stage"
   display_name                       = "build-stage"
   image                              = "OL7_X86_64_STANDARD_10"
   stage_execution_timeout_in_seconds = "36000"
