@@ -65,20 +65,19 @@ resource "oci_devops_build_pipeline_stage" "test_build_pipeline_stage" {
 
 #############################################################################
 
-resource "oci_devops_build_run" "test_build_run_1" {
-
+resource "null_resource" "sleep_before_build" {
   depends_on = [oci_devops_build_pipeline_stage.test_build_pipeline_stage]
+  provisioner "local-exec" {
+    command = "sleep 60"
+  }
+}
 
+resource "oci_devops_build_run" "test_build_run_1" {
+  depends_on = [null_resource.sleep_before_build]
   #Required
   build_pipeline_id = oci_devops_build_pipeline.test_build_pipeline.id
-
   #Optional
-  display_name = "build_run_${random_id.tag.hex}"
-
-  provisioner "local-exec" {
-    command = "sleep 300"
-  }
-
+  display_name = "build-run-${random_id.tag.hex}"
 }
 
 #############################################################################
