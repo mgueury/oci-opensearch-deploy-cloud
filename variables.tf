@@ -21,14 +21,6 @@ variable "release" {
   default     = "1.1.2"
 }
 
-variable "git_repo" {
-  default = "https://github.com/mgueury/oci-opensearch-devops.git"
-}
-
-variable "git_repo_name" {
-  default = "oci-opensearch-devops"
-}
-
 locals {
   ocir_docker_repository = join("", [lower(lookup(data.oci_identity_regions.current_region.regions[0], "key")), ".ocir.io"])
   #ocir_docker_repository = join("", [lower(lookup(data.oci_identity_regions.home_region.regions[0], "key")), ".ocir.io"])

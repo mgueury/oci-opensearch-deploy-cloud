@@ -30,6 +30,8 @@ resource "random_string" "id" {
   special = false
 }
 
-
+resource "random_id" "tag" {
+  byte_length = 2
+}
 
 
