@@ -55,9 +55,9 @@ resource "oci_vault_secret" "opensearch_secret_token" {
 */
 
 data "oci_vault_secret" "opensearch_secret_username" {
-  id = var.secret_username_ocid
+  secret_id = var.secret_username_ocid
 }
 
 data "oci_vault_secret" "opensearch_secret_token" {
-  id = var.secret_token_ocid
+  secret_id = var.secret_token_ocid
 }
