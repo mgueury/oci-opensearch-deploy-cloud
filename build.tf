@@ -45,6 +45,11 @@ resource "oci_devops_build_pipeline" "test_build_pipeline" {
 
   build_pipeline_parameters {
     items {
+      default_value = var.tenancy_ocid
+      description   = ""
+      name          = "TF_VAR_tenancy_ocid"
+    }  
+    items {
       default_value = var.compartment_ocid
       description   = ""
       name          = "TF_VAR_compartment_ocid"
@@ -64,6 +69,13 @@ resource "oci_devops_build_pipeline" "test_build_pipeline" {
 
 #############################################################################
 
+locals {
+  function_image_uri="${local.ocir_docker_repository}/${local.ocir_namespace}/${oci_artifacts_container_repository.opensearch_container_repository.display_name}:tikaparser"
+}
+
+#############################################################################
+
+
 resource "oci_artifacts_container_repository" "opensearch_container_repository" {
   #Required
   compartment_id = var.compartment_ocid
@@ -81,7 +93,7 @@ resource "oci_devops_deploy_artifact" "opensearch_deploy_artifact_default" {
     deploy_artifact_source_type = "OCIR"
 
     #Optional
-    image_uri     = "${local.ocir_docker_repository}/${local.ocir_namespace}/${oci_artifacts_container_repository.opensearch_container_repository.display_name}:$${BUILDRUN_HASH}"
+    image_uri     = local.function_image_uri
     image_digest  = " "
     #image_digest  = oci_devops_build_run.test_build_run.build_outputs[0].delivered_artifacts[0].items[0].delivered_artifact_hash
     repository_id = oci_devops_repository.test_repository.id
@@ -157,7 +169,7 @@ resource "oci_devops_build_pipeline_stage" "deliver_function" {
     #Optional
     items {
       #Optional
-      artifact_name = "tika_function_image"
+      artifact_name = "output_fn_default_image"
       artifact_id   = oci_devops_deploy_artifact.opensearch_deploy_artifact_default.id
     }
   }
