@@ -1,12 +1,12 @@
 resource "oci_kms_vault" "opensearch_kms" {
-  compartment_id = var.compartment_id
+  compartment_id = var.compartment_ocid
   display_name = "opensearch-vault"
   vault_type   = "DEFAULT"
 }
 
 resource "oci_kms_key" "opensearch_key" {
   #Required
-  compartment_id      = var.compartment_id
+  compartment_id      = var.compartment_ocid
   display_name        = "opensearch-key"
   management_endpoint = oci_kms_vault.opensearch_kms.management_endpoint
 

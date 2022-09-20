@@ -4,13 +4,13 @@
 
 resource "oci_objectstorage_bucket" "tf_bucket" {
   compartment_id = var.compartment_ocid
-  namespace      = locals.ocir_namespace
+  namespace      = local.ocir_namespace
   name           = "terraform-opensearch"
   access_type    = "NoPublicAccess"
 }
 
 resource "oci_objectstorage_object" "tf_object" {
-  namespace      = locals.ocir_namespace
+  namespace      = local.ocir_namespace
   bucket              = oci_objectstorage_bucket.tf_bucket.name
   object              = "tfstate.tf"
   content_language    = "en-US"
@@ -21,7 +21,7 @@ resource "oci_objectstorage_object" "tf_object" {
 
 
 resource "oci_objectstorage_preauthrequest" "object_par" {
-  namespace    = locals.ocir_namespace
+  namespace    = local.ocir_namespace
   bucket       = oci_objectstorage_bucket.tf_bucket.name
   object_name  = oci_objectstorage_object.tf_object.object
   name         = "objectPar"
@@ -55,7 +55,7 @@ resource "oci_devops_build_pipeline" "test_build_pipeline" {
       name          = "TF_VAR_region"
     }
     items {
-      default_value = locals.ocir_docker_repository
+      default_value = local.ocir_docker_repository
       description   = ""
       name          = "TF_VAR_ocir_docker_repository"
     }
