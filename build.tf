@@ -60,12 +60,12 @@ resource "oci_devops_build_pipeline" "test_build_pipeline" {
       name          = "TF_VAR_ocir_docker_repository"
     }
     items {
-      default_value = oci_vault_secret.opensearch_secret_username
+      default_value = oci_vault_secret.opensearch_secret_username.id
       description   = ""
       name          = "TF_VAR_username"
     }
     items {
-      default_value = oci_vault_secret.opensearch_secret_token
+      default_value = oci_vault_secret.opensearch_secret_token.id
       description   = ""
       name          = "TF_VAR_secret_token"
     }
