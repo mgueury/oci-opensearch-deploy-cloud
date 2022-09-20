@@ -208,7 +208,7 @@ resource "oci_devops_build_pipeline_stage" "build_other" {
 #############################################################################
 
 resource "null_resource" "sleep_before_build" {
-  depends_on = [oci_devops_build_pipeline_stage.build_other]
+  depends_on = [ oci_devops_build_pipeline_stage.build_other ]
   provisioner "local-exec" {
     command = "sleep 60"
   }
