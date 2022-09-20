@@ -70,8 +70,8 @@ locals {
   git_repo    = "https://github.com/mgueury/oci-opensearch-devops.git"
   git_repo_name = "oci-opensearch-devops"
   # OCI DevOps GIT login is tenancy/username
-  oci_username = base64decode(data.opensearch_secret_username.content)
-  oci_token = base64decode(data.opensearch_secret_token.content)
+  oci_username = base64decode(data.oci_vault_secret.opensearch_secret_username.content)
+  oci_token = base64decode(data.oci_vault_secret.opensearch_secret_token.content)
   encode_user = urlencode("${data.oci_identity_tenancy.tenant_details.name}/${local.oci_username}")
   encode_token  = urlencode(local.oci_token)
 }
