@@ -22,8 +22,8 @@ variableGroups:
 - title: Required Configuration
   visible: true  
   variables:
-    - secret_username_ocid
-    - secret_token_ocid
+    - oci_username
+    - oci_user_authtoken
 
 - title: DevOps Project Configuration
   visible: true  
@@ -45,7 +45,6 @@ variables:
 
 # Required
 
-
   oci_username:
     type: string
     required: true
@@ -59,21 +58,6 @@ variables:
     required: true
     visibile: true
     title: "OCI user auth token"
-    description: "You can get the auth token from your Profile menu -> click User Settings -> On left side  click *Auth Tokens -> Generate Token"
-
-  secret_username_ocid:
-    type: string
-    required: true
-    visibile: true
-    title: "Secret OCI of the user"
-    description: "For a federated user (single sign-on with an identity provider), enter the username in the following format: Federation/UserName. For example, if you use OCI's identity provider, your login would be, oracleidentitycloudservice/alice.jones@acme.com. If you are using OCI's direct sign-in, enter the username in the following format: YourUserName. For example, Acme/alice_jones. Your password is the auth token you created previously."
-
-  secret_token_ocid:
-    type: string 
-    # type: string
-    required: true
-    visibile: true
-    title: "Secret of the auth token"
     description: "You can get the auth token from your Profile menu -> click User Settings -> On left side  click *Auth Tokens -> Generate Token"
 
   compartment_id: 

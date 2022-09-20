@@ -55,21 +55,6 @@ resource "oci_devops_build_pipeline" "test_build_pipeline" {
       name          = "TF_VAR_region"
     }
     items {
-      default_value = local.ocir_docker_repository
-      description   = ""
-      name          = "TF_VAR_ocir_docker_repository"
-    }
-    items {
-      default_value = data.oci_vault_secret.opensearch_secret_username.id
-      description   = ""
-      name          = "TF_VAR_username"
-    }
-    items {
-      default_value = data.oci_vault_secret.opensearch_secret_token.id
-      description   = ""
-      name          = "TF_VAR_secret_token"
-    }
-    items {
       default_value = local.par_request_url
       description   = ""
       name          = "TF_VAR_terraform_state_url"
@@ -79,14 +64,114 @@ resource "oci_devops_build_pipeline" "test_build_pipeline" {
 
 #############################################################################
 
-resource "oci_devops_build_pipeline_stage" "test_build_pipeline_stage" {
+resource "oci_artifacts_container_repository" "opensearch_container_repository" {
+  #Required
+  compartment_id = var.compartment_ocid
+  display_name   = "opensearch-tika-function-${random_id.tag.hex}"
+  #Optional
+  is_public = var.container_repository_is_public
+}
+
+resource "oci_devops_deploy_artifact" "opensearch_deploy_artifact_default" {
+
+  #Required
+  argument_substitution_mode = "SUBSTITUTE_PLACEHOLDERS"
+  deploy_artifact_source {
+    #Required
+    deploy_artifact_source_type = "OCIR"
+
+    #Optional
+    image_uri     = "${local.ocir_docker_repository}/${local.ocir_namespace}/${oci_artifacts_container_repository.opensearch_container_repository.display_name}:$${BUILDRUN_HASH}"
+    image_digest  = " "
+    #image_digest  = oci_devops_build_run.test_build_run.build_outputs[0].delivered_artifacts[0].items[0].delivered_artifact_hash
+    repository_id = oci_devops_repository.test_repository.id
+  }
+
+  deploy_artifact_type = "DOCKER_IMAGE"
+  project_id           = oci_devops_project.test_project.id
+
+  #Optional
+  display_name = "${oci_artifacts_container_repository.opensearch_container_repository.display_name}"
+}
+
+
+resource "oci_devops_build_pipeline_stage" "build_function" {
   #Required
   build_pipeline_id = oci_devops_build_pipeline.test_build_pipeline.id
   build_pipeline_stage_predecessor_collection {
     #Required
     items {
       #Required
-      id = oci_devops_build_pipeline.test_build_pipeline.id
+      id = oci_devops_build_pipeline.build_function.id
+    }
+  }
+  build_pipeline_stage_type = "BUILD"
+  
+  #Optional
+  build_source_collection {
+
+    #Optional
+    items {
+      #Required
+      connection_type = "DEVOPS_CODE_REPOSITORY"
+
+      #Optional
+      branch = "main"
+      # connection_id  = oci_devops_connection.test_connection.id
+      name           = "build"
+      repository_id  = oci_devops_repository.test_repository.id
+      repository_url = "https://devops.scmservice.${var.region}.oci.oraclecloud.com/namespaces/${local.ocir_namespace}/projects/${oci_devops_project.test_project.name}/repositories/${oci_devops_repository.test_repository.name}"
+    }
+  }
+
+  build_spec_file                    = "build_spec_func.yaml"
+  description                        = "Build function"
+  display_name                       = "build-function"
+  image                              = "OL7_X86_64_STANDARD_10"
+  stage_execution_timeout_in_seconds = "36000"
+  wait_criteria {
+    #Required
+    wait_duration = "waitDuration"
+    wait_type     = "ABSOLUTE_WAIT"
+  }
+}
+
+resource "oci_devops_build_pipeline_stage" "deliver_function" {
+
+  depends_on = [oci_devops_build_pipeline_stage.test_build_pipeline_stage]
+
+  #Required
+  build_pipeline_id = oci_devops_build_pipeline.test_build_pipeline.id
+  build_pipeline_stage_predecessor_collection {
+    #Required
+    items {
+      #Required
+      id = oci_devops_build_pipeline_stage.build_function.id
+    }
+  }
+
+  build_pipeline_stage_type = "DELIVER_ARTIFACT"
+
+  deliver_artifact_collection {
+
+    #Optional
+    items {
+      #Optional
+      artifact_name = "tika_function_image"
+      artifact_id   = oci_devops_deploy_artifact.opensearch_deploy_artifact_default.id
+    }
+  }
+  display_name = "deliver-function"
+}
+
+resource "oci_devops_build_pipeline_stage" "build_other" {
+  #Required
+  build_pipeline_id = oci_devops_build_pipeline.test_build_pipeline.id
+  build_pipeline_stage_predecessor_collection {
+    #Required
+    items {
+      #Required
+      id = oci_devops_build_pipeline.deliver_function.id
     }
   }
   build_pipeline_stage_type = "BUILD"

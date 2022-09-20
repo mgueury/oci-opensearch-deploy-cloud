@@ -13,19 +13,11 @@ variable "app_name" {
   description = "Application name. Will be used as prefix to identify resources"
 }
 
-/*
+
 variable "oci_username" {
   default="oracleidentitycloudservice/name@domain.com"
 }
 variable "oci_user_authtoken" {}
-*/
-variable "secret_username_ocid" {
-  default="ocid1.vaultsecret.oc....."
-}
-variable "secret_token_ocid" {
-  default="ocid1.vaultsecret.oc....."
-}
-
 
 variable "release" {
   description = "Reference Architecture Release (OCI Architecture Center)"
