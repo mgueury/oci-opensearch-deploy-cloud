@@ -1,3 +1,40 @@
+#############################################################################
+# Used to run terraform from DevOps to keep the state in a fixed place
+# Not needed when using ResourceManager
+
+resource "oci_objectstorage_bucket" "tf_bucket" {
+  compartment_id = var.compartment_ocid
+  namespace      = locals.ocir_namespace
+  name           = "terraform-opensearch"
+  access_type    = "NoPublicAccess"
+}
+
+resource "oci_objectstorage_object" "tf_object" {
+  namespace      = locals.ocir_namespace
+  bucket              = oci_objectstorage_bucket.tf_bucket.name
+  object              = "tfstate.tf"
+  content_language    = "en-US"
+  content_type        = "text/plain"
+  content             = ""
+  content_disposition = "attachment; filename=\"filename.html\""
+}
+
+
+resource "oci_objectstorage_preauthrequest" "object_par" {
+  namespace    = locals.ocir_namespace
+  bucket       = oci_objectstorage_bucket.tf_bucket.name
+  object_name  = oci_objectstorage_object.tf_object.object
+  name         = "objectPar"
+  access_type  = "ObjectReadWrite"
+  time_expires = "2030-01-01T00:00:00Z"
+}
+
+locals {
+  par_request_url = "https://objectstorage.${var.region}.oraclecloud.com${oci_objectstorage_preauthrequest.object_par.access_uri}"
+}
+
+#############################################################################
+
 resource "oci_devops_build_pipeline" "test_build_pipeline" {
 
   #Required
@@ -16,6 +53,26 @@ resource "oci_devops_build_pipeline" "test_build_pipeline" {
       default_value = var.region
       description   = ""
       name          = "TF_VAR_region"
+    }
+    items {
+      default_value = locals.ocir_docker_repository
+      description   = ""
+      name          = "TF_VAR_ocir_docker_repository"
+    }
+    items {
+      default_value = oci_vault_secret.opensearch_secret_username
+      description   = ""
+      name          = "TF_VAR_username"
+    }
+    items {
+      default_value = oci_vault_secret.opensearch_secret_token
+      description   = ""
+      name          = "TF_VAR_secret_token"
+    }
+    items {
+      default_value = local.par_request_url
+      description   = ""
+      name          = "TF_VAR_terraform_state_url"
     }
   }
 }

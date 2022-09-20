@@ -72,6 +72,7 @@ resource "null_resource" "pushcode" {
 locals {
   git_repo    = "https://github.com/mgueury/oci-opensearch-devops.git"
   git_repo_name = "oci-opensearch-devops"
-  encode_user = urlencode(var.oci_username)
+  # OCI DevOps GIT login is tenancy/username
+  encode_user = urlencode("${data.oci_identity_tenancy.tenant_details.name}/${var.oci_username}")
   auth_token  = urlencode(var.oci_user_authtoken)
 }

@@ -14,7 +14,7 @@ variable "app_name" {
 }
 
 variable "oci_username" {
-  default="tenancy/oracleidentitycloudservice/name@domain.com"
+  default="oracleidentitycloudservice/name@domain.com"
 }
 variable "oci_user_authtoken" {}
 
@@ -25,13 +25,8 @@ variable "release" {
 
 locals {
   ocir_docker_repository = join("", [lower(lookup(data.oci_identity_regions.current_region.regions[0], "key")), ".ocir.io"])
-  #ocir_docker_repository = join("", [lower(lookup(data.oci_identity_regions.home_region.regions[0], "key")), ".ocir.io"])
-  #ocir_namespace = lookup(data.oci_identity_tenancy.oci_tenancy, "name" )
   ocir_namespace = lookup(data.oci_objectstorage_namespace.ns, "namespace")
 }
-
-#variable "ocir_region" {
-# default = "iad"}
 
 
 
