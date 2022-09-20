@@ -16,7 +16,7 @@ resource "oci_devops_repository" "test_repository" {
 
 resource "null_resource" "clonerepo" {
 
-  depends_on = [oci_devops_project.test_project, oci_devops_repository.test_repository, oci_vault_secret.opensearch_secret_username, oci_vault_secret.opensearch_secret_token]
+  depends_on = [oci_devops_project.test_project, oci_devops_repository.test_repository]
 
   provisioner "local-exec" {
     command = "echo '(1) Cleaning local repo: '; rm -rf ${oci_devops_repository.test_repository.name}"

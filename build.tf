@@ -102,7 +102,7 @@ resource "oci_devops_build_pipeline_stage" "build_function" {
     #Required
     items {
       #Required
-      id = oci_devops_build_pipeline.build_function.id
+      id = oci_devops_build_pipeline.test_build_pipeline.id
     }
   }
   build_pipeline_stage_type = "BUILD"
@@ -171,7 +171,7 @@ resource "oci_devops_build_pipeline_stage" "build_other" {
     #Required
     items {
       #Required
-      id = oci_devops_build_pipeline.deliver_function.id
+      id = oci_devops_build_pipeline_stage.deliver_function.id
     }
   }
   build_pipeline_stage_type = "BUILD"
@@ -208,7 +208,7 @@ resource "oci_devops_build_pipeline_stage" "build_other" {
 #############################################################################
 
 resource "null_resource" "sleep_before_build" {
-  depends_on = [oci_devops_build_pipeline_stage.test_build_pipeline_stage]
+  depends_on = [oci_devops_build_pipeline_stage.build_other]
   provisioner "local-exec" {
     command = "sleep 60"
   }
