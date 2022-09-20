@@ -12,8 +12,8 @@ resource "oci_kms_key" "opensearch_key" {
 
   key_shape {
     #Required
-    algorithm = var.key_key_shape_algorithm
-    length    = var.key_key_shape_length
+    algorithm = "AES"
+    length    = 32
   }
 }
 
@@ -29,11 +29,10 @@ resource "oci_vault_secret" "opensearch_secret_username" {
     name    = "name"
     stage   = "CURRENT"
   }
-  key_id = var.kms_key_ocid
+  key_id = oci_kms_key.opensearch_key.id
   secret_name = "opensearch-key-user"
   vault_id    = oci_kms_vault.opensearch_kms.id
 }
-
 
 resource "oci_vault_secret" "opensearch_secret_token" {
   #Required
@@ -47,7 +46,7 @@ resource "oci_vault_secret" "opensearch_secret_token" {
     name    = "name"
     stage   = "CURRENT"
   }
-  key_id = var.kms_key_ocid
+  key_id = oci_kms_key.opensearch_key.id
   secret_name = "opensearch-key-user"
   vault_id    = oci_kms_vault.opensearch_kms.id
 }
