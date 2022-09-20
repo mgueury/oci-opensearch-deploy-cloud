@@ -69,7 +69,7 @@ resource "oci_artifacts_container_repository" "opensearch_container_repository" 
   compartment_id = var.compartment_ocid
   display_name   = "opensearch-tika-function-${random_id.tag.hex}"
   #Optional
-  is_public = var.container_repository_is_public
+  is_public = true
 }
 
 resource "oci_devops_deploy_artifact" "opensearch_deploy_artifact_default" {
