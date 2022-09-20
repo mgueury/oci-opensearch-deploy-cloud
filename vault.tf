@@ -1,3 +1,5 @@
+/*
+
 resource "oci_kms_vault" "opensearch_kms" {
   compartment_id = var.compartment_ocid
   display_name = "opensearch-vault"
@@ -50,5 +52,12 @@ resource "oci_vault_secret" "opensearch_secret_token" {
   secret_name = "opensearch-key-user"
   vault_id    = oci_kms_vault.opensearch_kms.id
 }
+*/
 
+data "oci_vault_secret" "opensearch_secret_username" {
+  id = var.secret_username_ocid
+}
 
+data "oci_vault_secret" "opensearch_secret_token" {
+  id = var.secret_token_ocid
+}
