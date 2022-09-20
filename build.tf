@@ -138,7 +138,7 @@ resource "oci_devops_build_pipeline_stage" "build_function" {
 
 resource "oci_devops_build_pipeline_stage" "deliver_function" {
 
-  depends_on = [oci_devops_build_pipeline_stage.test_build_pipeline_stage]
+  depends_on = [oci_devops_build_pipeline_stage.build_function]
 
   #Required
   build_pipeline_id = oci_devops_build_pipeline.test_build_pipeline.id
